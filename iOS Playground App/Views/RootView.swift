@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  RootView.swift
 //  iOS Playground App
 //
 //  Created by Dmytro Ipatii on 25/10/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct RootView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +20,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    RootView()
 }
