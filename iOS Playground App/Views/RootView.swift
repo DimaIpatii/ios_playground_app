@@ -18,8 +18,8 @@ struct RootView: View {
     var body: some View {
         
         if authenticationManager.isAuthenticated {
-            //UserProfileView()
-            UserTasksView()
+            UserProfileView()
+            //UserTasksView()
         } else {
             SignInView()
         }

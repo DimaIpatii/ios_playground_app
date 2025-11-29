@@ -55,9 +55,9 @@ extension UserDTO {
     static var test: UserDTO {
         return UserDTO(
             id: 162,
-            firstName: "Dmytro",
-            lastName: "Ipatii",
-            email: "dima@email.com"
+            firstName: "John",
+            lastName: "Smith",
+            email: "john@smith.com"
         )
     }
     

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TaskListItemView: View {
 
-    let task: Binding<UserTask>
+    let task: UserTask
     var isDisabled: Bool = false
     var isCompleting: Bool = false
     
@@ -23,13 +23,13 @@ struct TaskListItemView: View {
         HStack(alignment: .center) {
             
             HStack(){
-                Text(task.wrappedValue.title)
+                Text(task.title)
                     .font(.headline)
             }
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
             .onTapGesture {
-                onPress(task.wrappedValue)
+                onPress(task)
             }
 
             if isCompleting {
@@ -45,10 +45,10 @@ struct TaskListItemView: View {
                 Toggle(
                     "",
                     isOn: Binding(get: {
-                        task.wrappedValue.completed
+                        task.completed
                     }, set: { completedValue in
                         
-                        if task.wrappedValue.completed != completedValue {
+                        if task.completed != completedValue {
                             onComplete(completedValue)
                         }
                         
@@ -82,7 +82,7 @@ struct TaskListItemView: View {
 
     VStack{
         TaskListItemView(
-            task: .constant(UserTask.testModel),
+            task: UserTask.testModel,
             isCompleting: false,
             onPress: { task in},
             onComplete: { isCompleted in }

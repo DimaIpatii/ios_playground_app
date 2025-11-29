@@ -61,7 +61,7 @@ struct UserTasksView: View {
                             
                             List{
                                 
-                                ForEach($viewModel.filteredTasks) { task in
+                                ForEach(viewModel.filteredTasks) { task in
                                     
                                     TaskListItemView(
                                         task: task,
@@ -72,7 +72,7 @@ struct UserTasksView: View {
                                         },
                                         
                                     ) { isCompleted in
-                                        viewModel.updateStatusCompleted(isCompleted, for: task.wrappedValue)
+                                        viewModel.updateStatusCompleted(isCompleted, for: task)
                                     }
                                     
                                     
