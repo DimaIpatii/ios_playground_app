@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct PrimaryButtonView: View {
+    
+    let title: String
+    var buttonStyle: BaseButtonView.ButtonStyleType = .borderedProminent
+    var isLoading: Bool = false
+    var isDisabled: Bool = false
+    var onPress: () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        BaseButtonView(
+            title: title,
+            buttonStyle: buttonStyle,
+            isDisabled: isDisabled,
+            isLoading: isLoading,
+            onPress: onPress
+        )
+        
     }
 }
 
 #Preview {
-    PrimaryButtonView()
+    PrimaryButtonView(
+        title: "Action",
+        isDisabled: true,
+        onPress: {}
+    )
+        
 }

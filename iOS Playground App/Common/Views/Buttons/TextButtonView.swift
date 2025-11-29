@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct TextButtonView: View {
+    
+    let title: String
+    var isDisabled: Bool = false
+    var isLoading: Bool = false
+    let onPress: () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        BaseButtonView(
+            title: title,
+            isDisabled: isDisabled,
+            isLoading: isLoading,
+            onPress: onPress
+        )
     }
 }
 
 #Preview {
-    TextButtonView()
+    TextButtonView(
+        title: "Action",
+        onPress: {}
+    )
 }

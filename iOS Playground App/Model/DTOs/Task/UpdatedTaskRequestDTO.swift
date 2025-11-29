@@ -9,22 +9,26 @@ import Foundation
 
 
 struct UpdatedTaskRequestDTO: Codable {
-    let id: Int
     let todo: String
     let completed: Bool
-    let userId: Int
     
-    init(id: Int, todo: String, completed: Bool, userId: Int) {
-        self.id = id
+    
+    init(
+        todo: String,
+        completed: Bool
+    ) {
         self.todo = todo
         self.completed = completed
-        self.userId = userId
     }
     
+    
     init(from taskDTO: TaskDTO) {
-        self.id = taskDTO.id
         self.todo = taskDTO.todo
         self.completed = taskDTO.completed
-        self.userId = taskDTO.userId
+    }
+    
+    init(from task: UserTask) {
+        self.todo = task.title
+        self.completed = task.completed
     }
 }

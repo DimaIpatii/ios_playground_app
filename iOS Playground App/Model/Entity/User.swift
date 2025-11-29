@@ -9,7 +9,7 @@ import Foundation
 
 
 struct User: Identifiable {
-    let id: Int
+    let id: UserId
     let name: String
     let email: String
 }

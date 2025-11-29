@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct RootView: View {
+    
+    @StateObject var authenticationManager: AuthenticationManager
+    
+    init() {
+        self._authenticationManager = StateObject(wrappedValue: DIContainer.shared.getInstance(of: AuthenticationManager.self))
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+        if authenticationManager.isAuthenticated {
+            //UserProfileView()
+            UserTasksView()
+        } else {
+            SignInView()
         }
-        .padding()
+              
     }
 }
 

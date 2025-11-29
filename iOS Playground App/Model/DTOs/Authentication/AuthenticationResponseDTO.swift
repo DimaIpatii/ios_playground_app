@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct AuthenticationResponseDTO: Codable {
+    let userId: Int
+    let email: String
+    let token: String
+}

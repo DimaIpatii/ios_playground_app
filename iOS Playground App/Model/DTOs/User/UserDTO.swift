@@ -31,7 +31,7 @@ struct UserDTO: Codable {
         let firstName = String(userName.first ?? "")
         let lastName = String(userName.last ?? "")
         
-        self.id = user.id
+        self.id = Int(user.id) ?? -1
         self.firstName = firstName
         self.lastName = lastName
         self.email = user.email
@@ -44,7 +44,7 @@ extension UserDTO {
 
     func toDomain() -> User {
         let fullName = firstName + " " + lastName
-        return User(id: id, name: fullName, email: email)
+        return User(id: String(id), name: fullName, email: email)
     }
     
 }
@@ -54,7 +54,7 @@ extension UserDTO {
  
     static var test: UserDTO {
         return UserDTO(
-            id: 1,
+            id: 162,
             firstName: "Dmytro",
             lastName: "Ipatii",
             email: "dima@email.com"

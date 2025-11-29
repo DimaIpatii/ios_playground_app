@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+
+class AppConstants {
+    
+    static var ERROR_TITLE_PLACEHOLDER: String = "Unexpected Error"
+    
+    static var MOCK_USER_ID: String = "165"
+    
+}

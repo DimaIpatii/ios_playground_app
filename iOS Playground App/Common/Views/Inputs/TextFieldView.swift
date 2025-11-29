@@ -7,12 +7,31 @@
 
 import SwiftUI
 
+
 struct TextFieldView: View {
+    
+    var label: String = ""
+    
+    @Binding var text: String
+    
+    var errorMessage: String? = nil
+    
+    var onEditingChange: (_ isEditing: Bool) -> Void = { _ in }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        InputFiendWrapperView(errorMessage: errorMessage) {
+            TextField(
+                label,
+                text: $text,
+                onEditingChanged: onEditingChange
+            )
+            .modifier(FieldBackground())
+        }
     }
 }
 
 #Preview {
-    TextFieldView()
+    TextFieldView(
+        text: .constant("")
+    )
 }
