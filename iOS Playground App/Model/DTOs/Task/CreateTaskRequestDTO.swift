@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct CreateTaskRequestDTO: Codable {
+    let todo: String
+    var completed: Bool = false
+}

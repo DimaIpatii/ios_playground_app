@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+// MARK: Base App Error Protocol
+protocol AppError: LocalizedError {
+    var title: String {get}
+    var message: String {get}
+    var code: Int {get}
+}

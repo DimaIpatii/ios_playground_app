@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct DestructiveButtonView: View {
+    
+    let title: String
+    var isDisabled: Bool = false
+    var isLoading: Bool = false
+    var onPress: () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        BaseButtonView(
+            title: title,
+            role: .destructive,
+            buttonStyle: .bordered,
+            isDisabled: isDisabled,
+            isLoading: isLoading,
+            onPress: onPress
+        )
     }
 }
 
 #Preview {
-    DestructiveButtonView()
+    DestructiveButtonView(
+        title: "Action", onPress: {}
+    )
 }

@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct ListItemView: View {
+    let label: String
+    let value: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack{
+            Text(label)
+            
+            Spacer()
+            
+            Text(value)
+                .foregroundStyle(.gray)
+        }
     }
 }
 
 #Preview {
-    ListItemView()
+    ListItemView(
+        label: "Email",
+        value: "test@email.com"
+    )
 }

@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+
+let userJSONResponse = """
+    {
+        "id": 162,
+        "firstName": "Emily",
+        "lastName": "Johnson",
+        "email": "emily.johnson@x.dummyjson.com"
+    }
+"""

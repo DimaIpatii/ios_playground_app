@@ -8,11 +8,49 @@
 import SwiftUI
 
 struct EmailTextFieldView: View {
+    
+    var label: String = "Email"
+    
+    @Binding var email: String
+    
+    var errorMessage: String? = nil
+    
+    var onEditingChanged: (_ isEditing: Bool) -> Void = { _ in }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        InputFiendWrapperView(errorMessage: errorMessage) {
+            
+            TextField(
+                label,
+                text: $email,
+                onEditingChanged: onEditingChanged
+            )
+                .autocorrectionDisabled(true)
+                .textInputAutocapitalization(.never)
+                .keyboardType(.emailAddress)
+                .modifier(FieldBackground())
+                
+        }
+        
     }
 }
 
+
+
+
+struct EmailTextFieldWrapperView: View {
+    @State var email: String = ""
+    
+    var body: some View {
+        EmailTextFieldView(
+            email: $email
+            
+        )
+        
+    }
+}
 #Preview {
-    EmailTextFieldView()
+    EmailTextFieldWrapperView()
+        .padding()
 }

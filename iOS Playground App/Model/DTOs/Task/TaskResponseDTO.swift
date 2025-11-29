@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct TaskResponseDTO: Codable {
+    let todos: Array<TaskDTO>
+    let total: Int
+    let skip: Int
+    let limit: Int
+}

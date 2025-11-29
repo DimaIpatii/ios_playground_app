@@ -1,5 +1,5 @@
 //
-//  TextFieldModifiers.swift
+//  FieldModifiers.swift
 //  iOS Playground App
 //
 //  Created by Dmytro Ipatii on 15/11/25.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct TextFieldBackground: ViewModifier {
+struct FieldBackground: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding()
