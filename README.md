@@ -145,65 +145,15 @@ iOS Playground App (Project Root)
 
 ## 👮🏻‍♂️ Folder Responsibilities
 
-### 1️⃣ Application/
-- Initialize the app
-- Setup dependency injection
-- Configure root view
-- Manage environment objects
-
-### 2️⃣ Common/
-- Provide reusable modifiers
-- Create shared UI components
-- Ensure UI consistency
-- Enable component reusability
-
-### 3️⃣ Core/
-- Handle network requests
-- Manage data storage
-- Define error types
-- Store app constants
-- Coordinate navigation
-- Manage authentication
-
-### 4️⃣ Model/
-- Define domain entities
-- Create network DTOs
-- Define custom types
-- Provide data structures
-
-### 5️⃣ Repositories/
-- Define data access interfaces
-- Implement data fetching
-- Transform DTOs to entities
-- Abstract data sources
-- Handle data persistence
-
-### 6️⃣ Resources/
-- Provide images
-- Store color definitions
-- Manage fonts
-- Handle localization
-
-### 7️⃣ Services/
-- Implement business logic
-- Orchestrate repositories
-- Process data
-- Enforce business rules
-
-### 8️⃣ Utilities/
-- Extend Swift types
-- Provide helper functions
-- Create reusable utilities
-- Enable code reuse
-
-### 9️⃣ ViewModels/
-- Manage screen state
-- Handle user interactions
-- Call services
-- Update @Published properties
-
-### 🔟 Views/
-- Display user interface
-- Handle user input
-- Bind to ViewModels
-- Manage navigation
+| # | Folder | Responsibilities |
+|---|--------|------------------|
+| 1️⃣ | **Application/** | • Initialize the app<br/>• Setup dependency injection<br/>• Configure root view<br/>• Manage environment objects |
+| 2️⃣ | **Common/** | • Provide reusable modifiers<br/>• Create shared UI components<br/>• Ensure UI consistency<br/>• Enable component reusability |
+| 3️⃣ | **Core/** | • Handle network requests<br/>• Manage data storage<br/>• Define error types<br/>• Store app constants<br/>• Coordinate navigation<br/>• Manage authentication |
+| 4️⃣ | **Model/** | • Define domain entities<br/>• Create network DTOs<br/>• Define custom types<br/>• Provide data structures |
+| 5️⃣ | **Repositories/** | • Define data access interfaces<br/>• Implement data fetching<br/>• Transform DTOs to entities<br/>• Abstract data sources<br/>• Handle data persistence |
+| 6️⃣ | **Resources/** | • Provide images<br/>• Store color definitions<br/>• Manage fonts<br/>• Handle localization |
+| 7️⃣ | **Services/** | • Implement business logic<br/>• Orchestrate repositories<br/>• Process data<br/>• Enforce business rules |
+| 8️⃣ | **Utilities/** | • Extend Swift types<br/>• Provide helper functions<br/>• Create reusable utilities<br/>• Enable code reuse |
+| 9️⃣ | **ViewModels/** | • Manage screen state<br/>• Handle user interactions<br/>• Call services<br/>• Update @Published properties |
+| 🔟 | **Views/** | • Display user interface<br/>• Handle user input<br/>• Bind to ViewModels<br/>• Manage navigation |
