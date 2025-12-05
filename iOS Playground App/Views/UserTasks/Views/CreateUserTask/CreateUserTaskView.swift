@@ -15,14 +15,10 @@ struct CreateUserTaskView: View {
     
     @StateObject private var viewModel: ViewModel
     
-    var onSubmit: OnCreateUserTask
     
-    init(
-        onSubmit: @escaping OnCreateUserTask
-    ) {
-        
-        self.onSubmit = onSubmit
-        
+    
+    init() {
+
         let tasksRepository = DIContainer.shared.getInstance(of: TasksRepository.self)
         
         //let userId = DIContainer.shared.getInstance(of: AuthenticationManager.self).userId!
@@ -64,7 +60,7 @@ struct CreateUserTaskView: View {
                         isDisabled: viewModel.isSavingButtonDisabled
                     ) {
                         viewModel.submit { createdTask in
-                            onSubmit(createdTask)
+                            //onSubmit(createdTask)
                             dismiss()
                         }
                     }
@@ -88,7 +84,5 @@ struct CreateUserTaskView: View {
 }
 
 #Preview {
-    CreateUserTaskView { newTask in
-        
-    }
+    CreateUserTaskView()
 }

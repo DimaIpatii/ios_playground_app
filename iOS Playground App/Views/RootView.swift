@@ -9,19 +9,25 @@ import SwiftUI
 
 struct RootView: View {
     
-    @StateObject var authenticationManager: AuthenticationManager
-    
+    @StateObject var rootCoordinator: RootCoordinator
+
     init() {
-        self._authenticationManager = StateObject(wrappedValue: DIContainer.shared.getInstance(of: AuthenticationManager.self))
+         
+        let authenticationManager = DIContainer.shared.getInstance(of: AuthenticationManager.self)
+        
+        self._rootCoordinator = StateObject(wrappedValue: RootCoordinator(
+            authenticationManager: authenticationManager
+        ))
     }
     
     var body: some View {
         
-        if authenticationManager.isAuthenticated {
-            UserProfileView()
-            //UserTasksView()
+        if rootCoordinator.isAuthenticated {
+            MainNavigationView()
+                .environmentObject(rootCoordinator)
         } else {
-            SignInView()
+            AuthenticationNavigationView()
+                .environmentObject(rootCoordinator)
         }
               
     }

@@ -10,19 +10,14 @@ import SwiftUI
 struct SignUpView: View {
     
     @StateObject private var viewModel: ViewModel
+    @EnvironmentObject private var authenticationCoordinator: AuthenticationNavigationView.AuthenticationCoordinator
     
-    init() {
-        
-        let authRepository = DIContainer.shared.getInstance(of: AuthenticationRepository.self)
-        
-        let viewModel = ViewModel(repository: authRepository)
-        
+    init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
-        NavigationStack {
-            
+        VStack{
             Form{
                 
                 EmailTextFieldView(
@@ -36,8 +31,7 @@ struct SignUpView: View {
                         
                     }
                 )
-                
-                
+
                 PasswordFieldView(
                     password: $viewModel.password,
                     errorMessage: viewModel.passwordErrorMessage) { isEditing in
@@ -52,9 +46,12 @@ struct SignUpView: View {
                 
                 TextButtonView(
                     title: "Sign Up",
+                    isLoading: viewModel.isSigningUp,
                     onPress: {
                         Task {
-                            await viewModel.signUp()
+                            await viewModel.signUp(onComplete: {
+                                authenticationCoordinator.back()
+                            })
                         }
                     }
                 )
@@ -68,13 +65,10 @@ struct SignUpView: View {
                 isPresnted: $viewModel.showErrorAlert,
                 confirmAction: viewModel.closeErrorAlert
             )
-            
         }
     }
 }
 
 #Preview {
-    SignUpView(
-        
-    )
+    AuthenticationNavigationView.AuthenticationCoordinator().view(for: .signUp)
 }

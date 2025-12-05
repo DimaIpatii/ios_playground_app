@@ -9,28 +9,18 @@ import SwiftUI
 
 struct SignInView: View {
     
+    @EnvironmentObject private var rootCoordinator: RootCoordinator
+    @EnvironmentObject private var authenticationCoordinator: AuthenticationNavigationView.AuthenticationCoordinator
+    
+    
     @StateObject private var viewModel: ViewModel
     
-    @State var isForgotPasswordFormPresented: Bool = false
-    
-    @State var isSignUpFormPresented: Bool = false
-    
-    init() {
-        
-        let authenticationRepository = DIContainer.shared.getInstance(of: AuthenticationRepository.self)
-        
-        let authenticationManager = DIContainer.shared.getInstance(of: AuthenticationManager.self)
-        
-        let viewModel = ViewModel(
-            repository: authenticationRepository,
-            authenticationManager: authenticationManager
-        )
-        
+    init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     
     }
     var body: some View {
-        NavigationStack{
+        VStack{
             Form{
                 
                 Section {
@@ -52,16 +42,14 @@ struct SignInView: View {
                             title: "Forgot password?",
                             isDisabled: viewModel.isSiginingIn,
                             onPress: {
-                                isForgotPasswordFormPresented = true
+                                authenticationCoordinator.openSheet(for: .forgetPassword)
                             }
                         )
                         
                     }
                     
                 }
-                .sheet(isPresented: $isForgotPasswordFormPresented) {
-                    PasswordResetView()
-                }
+                
                 
             }
             .navigationTitle("Sign In")
@@ -72,8 +60,8 @@ struct SignInView: View {
                     title: "Sign In",
                     isLoading: viewModel.isSiginingIn,
                     onPress: {
-                        Task {
-                            await viewModel.signIn()
+                        viewModel.signIn { userId in
+                            rootCoordinator.completeAuthentication(with: userId)
                         }
                     }
                 )
@@ -83,14 +71,13 @@ struct SignInView: View {
                     title: "Sign Up",
                     isDisabled: viewModel.isSiginingIn,
                     onPress: {
-                        self.isSignUpFormPresented = true
+                        authenticationCoordinator.navigate(to: .signUp)
                     }
                 )
                 .frame(maxWidth: .infinity)
                 
             }
             .padding()
-            
         }
         .alertDialog(
             title: viewModel.errorTitle,
@@ -98,15 +85,11 @@ struct SignInView: View {
             isPresnted: $viewModel.showErrorAlert,
             confirmAction: viewModel.closeErrorAlert
         )
-        .sheet(
-            isPresented: $isSignUpFormPresented
-        ) {
-            SignUpView()
-        }
+        
         
     }
 }
 
 #Preview {
-    SignInView()
+    AuthenticationNavigationView.AuthenticationCoordinator().view(for: .signIn)
 }

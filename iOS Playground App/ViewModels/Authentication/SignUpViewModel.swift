@@ -36,7 +36,7 @@ extension SignUpView {
             self.repository = repository
         }
         
-        func signUp() async {
+        func signUp(onComplete: @escaping () -> Void ) async {
 
             let isEmailValid = self.validateEmailInput()
             
@@ -51,6 +51,8 @@ extension SignUpView {
                 self.isSigningUp = true
                 
                 try await repository.signUp(email: self.email, password: self.password, name: self.name)
+                
+                onComplete()
                 
                 self.isSigningUp = false
                 

@@ -9,26 +9,17 @@ import SwiftUI
 
 struct UserProfileView: View {
     
+    @EnvironmentObject private var rootCoordinator: RootCoordinator
+    @EnvironmentObject private var userProfileCoordinator: UserProfileNavigationView.UserProfileCoordinator
+    
     @StateObject private var viewModel: ViewModel
     
     @State private var isEditUserFormPresented: Bool = false
     
     @State private var isDeleteAccountAlertPresented: Bool = false
     
-    init() {
-
-        let userRespository = DIContainer.shared.getInstance(of: UserRepository.self)
-        
-        let authenticationRepository = DIContainer.shared.getInstance(of: AuthenticationRepository.self)
-        
-        let authenticationManager = DIContainer.shared.getInstance(of: AuthenticationManager.self)
-        
-        let viewModel = ViewModel(
-            userRepository: userRespository,
-            authenticationRepository: authenticationRepository,
-            autheticationManager: authenticationManager
-        )
-        
+    init(viewModel: ViewModel) {
+ 
         self._viewModel = StateObject(wrappedValue: viewModel)
         
     }
@@ -62,7 +53,7 @@ struct UserProfileView: View {
                                 title: "Sign Out",
                                 isDisabled: viewModel.actionsDisabled,
                                 onPress: {
-                                    viewModel.signOut()
+                                    viewModel.signOut(onComplete: rootCoordinator.startAuthentication)
                                 }
                             )
 
@@ -76,7 +67,7 @@ struct UserProfileView: View {
                             icon: "pencil",
                             isDisabled: viewModel.actionsDisabled,
                             onPress: {
-                                isEditUserFormPresented = true
+                                userProfileCoordinator.openSheet(for: .editUserProfile(user))
                             }
                         )
                         
@@ -90,18 +81,10 @@ struct UserProfileView: View {
                     confirmActionLabel: "Delete",
                     confirmActionRole: .destructive,
                     confirmAction: {
-                        Task {
-                            await viewModel.deleteUser()
-                        }
+                        viewModel.deleteUser(onSuccess: rootCoordinator.startAuthentication)
                     },
                     dismissActionLabel: "Cancel"
                 )
-                .sheet(isPresented: $isEditUserFormPresented) {
-                    EditUserProfileView(
-                        user: user,
-                        onEditingComplete: viewModel.setUser
-                    )
-                }
                 
             } else {
                 
@@ -117,5 +100,5 @@ struct UserProfileView: View {
 }
 
 #Preview {
-    UserProfileView()
+    UserProfileNavigationView.UserProfileCoordinator().view(for: .userProfile)
 }

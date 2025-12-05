@@ -17,10 +17,7 @@ extension UserProfileView {
         private let userRepository: UserRepository
         
         private let authenticationRepository: AuthenticationRepository
-        
-        private let autheticationManager: AuthenticationManager
-        
-        
+
         @Published var user: User? = nil
         
         @Published var isInitializing: Bool = false
@@ -35,14 +32,12 @@ extension UserProfileView {
 
         init(
             userRepository: UserRepository,
-            authenticationRepository: AuthenticationRepository,
-            autheticationManager: AuthenticationManager
+            authenticationRepository: AuthenticationRepository
         ) {
             self.userRepository = userRepository
             
             self.authenticationRepository = authenticationRepository
-            
-            self.autheticationManager = autheticationManager
+
         }
         
         func initializeUser() async {
@@ -65,36 +60,37 @@ extension UserProfileView {
             
         }
         
-        func deleteUser() async {
+        func deleteUser(onSuccess: @escaping () -> Void ) {
             
-            do {
-                isDeleting = true
-                
-                try await Task.sleep(for: .seconds(3))
-                
-                try await userRepository.deleteUser(id: Int(user!.id) ?? -1)
-                
-                self.authenticationRepository.signOut()
-                
-                self.autheticationManager.removeCredentials()
-                
-                isDeleting = false
-                
-            } catch {
-                
-                errorMessage = error.localizedDescription
-                
-                isDeleting = false
-                
+            Task {
+                do {
+                    isDeleting = true
+                    
+                    try await Task.sleep(for: .seconds(3))
+                    
+                    try await userRepository.deleteUser(id: Int(user!.id) ?? -1)
+                    
+                    self.authenticationRepository.signOut()
+                    
+                    onSuccess()
+                    
+                    isDeleting = false
+                    
+                } catch {
+                    
+                    errorMessage = error.localizedDescription
+                    
+                    isDeleting = false
+                    
+                }
             }
             
         }
         
-        func signOut() {
+        func signOut(onComplete: @escaping () -> Void) -> Void {
                 
             self.authenticationRepository.signOut()
-            
-            self.autheticationManager.removeCredentials()
+            onComplete()
             
         }
         

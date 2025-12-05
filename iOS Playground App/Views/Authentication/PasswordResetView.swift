@@ -12,10 +12,7 @@ struct PasswordResetView: View {
     
     @StateObject private var viewModel: ViewModel
     
-    init() {
-        let authenticationRepository = DIContainer.shared.getInstance(of: AuthenticationRepository.self)
-        
-        let viewModel = ViewModel(repository: authenticationRepository)
+    init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -78,7 +75,5 @@ struct PasswordResetView: View {
 }
 
 #Preview {
-    PasswordResetView(
-        
-    )
+    AuthenticationNavigationView.AuthenticationCoordinator().sheetView(for: .forgetPassword)
 }

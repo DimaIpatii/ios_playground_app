@@ -14,11 +14,11 @@ struct EditUserProfileView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject private var viewModel: ViewModel
-    let onEditingComplete: OnEditindCompleteCallback
+    
     
     init(
-        user: User,
-        onEditingComplete: @escaping OnEditindCompleteCallback
+        user: User
+    
     ) {
         
         let userRepository = DIContainer.shared.getInstance(of: UserRepository.self)
@@ -27,7 +27,7 @@ struct EditUserProfileView: View {
         
         self._viewModel = StateObject(wrappedValue: viewModel)
         
-        self.onEditingComplete = onEditingComplete
+        
         
     }
     
@@ -75,7 +75,6 @@ struct EditUserProfileView: View {
                         isLoading: viewModel.isUpdating,
                         onPress: {
                             Task{
-                                await viewModel.submit(onSuccess: onEditingComplete)
                                 dismiss()
                             }
                         }
@@ -100,7 +99,6 @@ struct EditUserProfileView: View {
 
 #Preview {
     EditUserProfileView(
-        user: UserDTO.test.toDomain(),
-        onEditingComplete: {updatedUser in }
+        user: UserDTO.test.toDomain()
     )
 }

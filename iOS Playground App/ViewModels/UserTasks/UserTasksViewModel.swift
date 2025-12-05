@@ -11,9 +11,27 @@ import SwiftUI
 
 extension UserTasksView {
     
+    enum Filter: String, CaseIterable, Identifiable {
+        case all
+        case completed
+        case notCompleted
+        
+        var id: Self {
+            return self
+        }
+        
+        var title: String {
+            switch self {
+            case .all: return "All"
+            case .completed: return "Completed"
+            case .notCompleted: return "Not completed"
+            }
+        }
+    }
+    
     @MainActor
     final class ViewModel: ObservableObject {
-        
+
         private let userId: UserId
         private let tasksRepository: TasksRepository
         
@@ -26,10 +44,15 @@ extension UserTasksView {
         
 
         @Published var searchQuery: String = ""
+        @Published var selectedFilter: Filter = .all {
+            didSet {
+                self.applyFilters()
+            }
+        }
         
         private var tasks: [UserTask] = [] {
             didSet {
-                self.filterTasksBySearchQuery()
+                self.applyFilters()
             }
         }
         
@@ -65,22 +88,45 @@ extension UserTasksView {
                 .dropFirst()
                 .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
                 .sink { _ in
-                    self.filterTasksBySearchQuery()
+                    self.applyFilters()
                 }
                 .store(in: &cancellables)
             
         }
         
-        private func filterTasksBySearchQuery() {
+        private func applyFilters() -> Void {
+         
+            let filteredTasksBySearchQuery = self.filterTasksBySearchQuery(searchQuery: self.searchQuery)
+            
+            let filteredTasksByCompletedStatus = self.filterTasksByCompletedStatus(tasks: filteredTasksBySearchQuery)
+            
+            self.filteredTasks = filteredTasksByCompletedStatus
+        }
+        
+        private func filterTasksBySearchQuery(searchQuery: String) -> [UserTask] {
             
             guard self.searchQuery.trim().isEmpty == false else {
-                self.filteredTasks = tasks
-                return
+                return self.tasks
             }
             
-            self.filteredTasks = self.tasks.filter({$0.title.lowercased().contains(searchQuery.lowercased())})
+            return self.tasks.filter({$0.title.lowercased().contains(searchQuery.lowercased())})
             
         }
+        
+        private func filterTasksByCompletedStatus(tasks: [UserTask]) -> [UserTask] {
+            
+            guard self.selectedFilter != .all else {
+                return tasks
+            }
+            
+            return tasks.filter({ task in
+                
+                let isCompleted = self.selectedFilter == .completed
+                
+                return task.completed == isCompleted
+            })
+        }
+        
         
         func initializeTasks() async -> Void {
 

@@ -68,7 +68,7 @@ enum NetworkError: AppError {
         case .notFound:
             "The resource you are looking for might have been deleted or moved."
             
-        case .serverError(statusCode: let statusCode):
+        case .serverError(statusCode: _):
             "Wait a moment and try again."
             
         default:

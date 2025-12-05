@@ -13,12 +13,9 @@ struct EditUserTaskView: View {
     
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: ViewModel
-    
-    var onSubmit: SubmitTasksChanges
-    
+
     init(
-        task: UserTask,
-        onSubmit: @escaping SubmitTasksChanges
+        task: UserTask
     ) {
         
         let tasksRepository = DIContainer.shared.getInstance(of: TasksRepository.self)
@@ -26,7 +23,6 @@ struct EditUserTaskView: View {
         //let userId = DIContainer.shared.getInstance(of: AuthenticationManager.self).userId!
         let userId = AppConstants.MOCK_USER_ID // TODO: Remove after testing
         
-        self.onSubmit = onSubmit
         self._viewModel = StateObject(wrappedValue: ViewModel(
                 userId: userId,
                 userTask: task,
@@ -62,7 +58,6 @@ struct EditUserTaskView: View {
                         isLoading: viewModel.isLoading,
                         onPress: {
                             viewModel.submitForm { userTask in
-                                onSubmit(userTask)
                                 dismiss()
                             }
                         }
@@ -88,8 +83,6 @@ struct EditUserTaskView: View {
 
 #Preview {
     EditUserTaskView(
-        task: UserTask.testModel, onSubmit: { updatedTask in
-            
-        }
+        task: UserTask.testModel
     )
 }

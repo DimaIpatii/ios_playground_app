@@ -14,7 +14,6 @@ extension SignInView {
     @MainActor
     final class ViewModel: ObservableObject {
         
-        private let authenticationManager: AuthenticationManager
         private let repository: AuthenticationRepository
         
         // Form States
@@ -34,40 +33,44 @@ extension SignInView {
         @Published var errorMessage: String? = nil
 
         init(
-            repository: AuthenticationRepository,
-            authenticationManager: AuthenticationManager
+            repository: AuthenticationRepository
         ) {
             self.repository = repository
-            self.authenticationManager = authenticationManager
         }
         
-        func signIn() async {
-                    
-            let isEmailValid = self.validateEmailInput()
-            
-            let isPasswordValid = self.validatePasswordInput()
-            
-            guard isEmailValid, isPasswordValid else {
-                return
-            }
-            
-            do {
+        func signIn(onSuccess: @escaping (_ userId: Int) -> Void ) -> Void {
+                
+            Task {
+                let isEmailValid = self.validateEmailInput()
+                
+                let isPasswordValid = self.validatePasswordInput()
+                
+                guard isEmailValid, isPasswordValid else {
+                    return
+                }
+                
+                do {
 
-                self.isSiginingIn = true
-                
-                let userId = try await self.repository.signIn(email: self.email, password: self.password)
-                
-                self.isSiginingIn = false
-                
-                self.authenticationManager.saveCredentials(userId: userId)
-                
-            }  catch {
-                
-                self.handleUnexpectedError()
-                
-                self.isSiginingIn = false
-                
+                    self.isSiginingIn = true
+                    
+                    let userId = try await self.repository.signIn(email: self.email, password: self.password)
+                    
+                    onSuccess(userId)
+                    
+                    self.isSiginingIn = false
+                    
+                    
+                    //self.authenticationManager.saveCredentials(userId: userId)
+                    
+                }  catch {
+                    
+                    self.handleUnexpectedError()
+                    
+                    self.isSiginingIn = false
+                    
+                }
             }
+            
         }
         
         func closeErrorAlert() -> Void {
